@@ -1,0 +1,14 @@
+streamlit
+python-dotenv
+langchain
+langchain-core
+langchain-community
+langchain-text-splitters
+langchain-huggingface
+langchain-groq
+langgraph
+langgraph-checkpoint-postgres
+psycopg[binary]
+faiss-cpu
+youtube-transcript-api
+huggingface-hub
