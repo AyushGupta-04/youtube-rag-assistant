@@ -291,9 +291,11 @@ Answer         Quiz + PDF         │
 The application accepts common YouTube URL formats.
 
 Standard YouTube URL
+
 https://www.youtube.com/watch?v=VIDEO_ID
 
 Short YouTube URL
+
 https://youtu.be/VIDEO_ID
 
 The video ID is extracted using the project's:
@@ -314,6 +316,7 @@ language=["en", "hi"]
 If a transcript cannot be found, the application raises an error instead of continuing with empty data.
 
 Transcript Flow
+
 YouTube URL
      ↓
 Video ID
@@ -333,6 +336,7 @@ RecursiveCharacterTextSplitter(
 )
 
 Configuration
+
 Parameter	Value
 Chunk Size	800
 Chunk Overlap	150
@@ -363,6 +367,7 @@ BAAI/bge-small-en-v1.5
 through the project's embedding configuration.
 
 Embedding Flow
+
 Transcript Chunk
        ↓
 Embedding Model
@@ -399,6 +404,7 @@ vectorstore.as_retriever(
 )
 
 Retrieval Configuration
+
 Parameter	Value	Purpose
 search_type	mmr	Maximum Marginal Relevance
 k	5	Number of final documents returned
@@ -424,6 +430,7 @@ create_llm()
 The current application uses a Groq-powered model configured by the project.
 
 Generation Pipeline
+
 User Question
       ↓
 Retriever
@@ -475,6 +482,7 @@ score
 This allows users to maintain multiple independent conversations.
 
 Example Conversation
+
 👤 User:
 What is the main topic of the video?
 
@@ -524,7 +532,6 @@ The supported difficulty levels are:
 Easy
 Medium
 Hard
-
 The YouTubeAssistant.generate_mcqs() method sends the MCQ request through the same LangGraph workflow used by the application.
 
 response = self.graph.invoke(
@@ -538,10 +545,11 @@ response = self.graph.invoke(
 )
 
 🎯 MCQ Quiz System
-MCQ Structured Output
+🎯 MCQ Structured Output
 The application uses Pydantic models to enforce a predictable MCQ structure.
 
 MCQ Model
+
 class MCQ(BaseModel):
     question: str
     option_a: str
@@ -598,6 +606,7 @@ Avoid duplicate questions.
 Test understanding of the transcript.
 Follow the selected difficulty.
 MCQ Generation Flow
+
 User
  ↓
 Select Number
@@ -646,6 +655,7 @@ Correct Answers
 Total Questions
 
 Example
+
 Your score: 4/5
 
 After submission, the application displays:
@@ -867,10 +877,12 @@ Replace YOUR_USERNAME with your GitHub username.
 
 2. Create a Virtual Environment
 Windows
+
 python -m venv venv
 venv\Scripts\activate
 
 Linux / macOS
+
 python3 -m venv venv
 source venv/bin/activate
 
@@ -1092,14 +1104,18 @@ If the requested information is not present in the retrieved context, the model 
 The video doesn't mention this
 
 Grounding Strategy
-Yes
-No
 👤 User Question
+       ↓
 🔎 Retriever
+       ↓
 Relevant Transcript?
+       ↓
 📚 Provide Context to LLM
+       ↓
 🤖 Generate Grounded Answer
+       ↓
 The video doesn't mention this
+
 The MCQ system follows the same grounding principle.
 
 The MCQ prompt explicitly instructs the model:
@@ -1203,14 +1219,21 @@ The updated workflow now supports two modes:
 chat
 mcq
 
-chat
-mcq
+Workflow
 ["START"]
+     ↓
 🔎 Retrieve Node
+     ↓
 Mode?
-💬 Chat Node
-📝 MCQ Node
+   ↙   ↘
+chat   mcq
+ ↓       ↓
+💬      📝
+Chat    MCQ
+Node    Node
+ ↓       ↓
 ["END"]
+
 Retrieve Node
 Question
    ↓
@@ -1306,30 +1329,30 @@ No multi-user account system is currently implemented.
 🔮 Future Improvements
 The project can be extended with:
 
- 🌐 FastAPI backend
- 🎨 React / Next.js frontend
- 🔐 User authentication
- 👥 Multi-user support
- 🎬 Multiple videos per conversation
- 🌍 Automatic language detection
- 🗣️ More transcript languages
- ⏱️ Clickable timestamp citations
- 📚 Source citations in answers
- 🔎 Hybrid keyword + semantic retrieval
- 🧠 Reranking models
- ✍️ Query rewriting
- 📝 More advanced quiz types
- 📊 Quiz analytics
- 🏆 Leaderboards
- 🐳 Docker support
- 🧪 Automated tests
- 🚀 GitHub Actions CI/CD
- 📊 RAG evaluation metrics
- 🔭 LangSmith observability
- 📈 Retrieval and answer-quality analytics
- 💾 Persistent user chat history
- ☁️ Cloud-based FAISS/vector database
- 📄 More customizable PDF templates
+🌐 FastAPI backend
+🎨 React / Next.js frontend
+🔐 User authentication
+👥 Multi-user support
+🎬 Multiple videos per conversation
+🌍 Automatic language detection
+🗣️ More transcript languages
+⏱️ Clickable timestamp citations
+📚 Source citations in answers
+🔎 Hybrid keyword + semantic retrieval
+🧠 Reranking models
+✍️ Query rewriting
+📝 More advanced quiz types
+📊 Quiz analytics
+🏆 Leaderboards
+🐳 Docker support
+🧪 Automated tests
+🚀 GitHub Actions CI/CD
+📊 RAG evaluation metrics
+🔭 LangSmith observability
+📈 Retrieval and answer-quality analytics
+💾 Persistent user chat history
+☁️ Cloud-based FAISS/vector database
+📄 More customizable PDF templates
 🤝 Contributing
 Contributions are welcome!
 
@@ -1399,3 +1422,5 @@ Built with:
 Python • Streamlit • LangChain • LangGraph • FAISS • Groq • Hugging Face • PostgreSQL • ReportLab
 
 If you found this project useful, consider giving the repository a ⭐ on GitHub!
+
+<p align="center"> <a href="#-ai-youtube-chatbot">⬆️ Back to Top</a> </p>
