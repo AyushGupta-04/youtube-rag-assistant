@@ -1,374 +1,395 @@
-<div align="center">
-
 # 🎥 AI YouTube Chatbot
 
-**Chat with YouTube videos, generate MCQ quizzes, and download them as PDFs using AI-powered RAG**
-
-<p>
-  <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white">
-  <img src="https://img.shields.io/badge/Streamlit-App-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white">
-  <img src="https://img.shields.io/badge/LangChain-RAG-1C3C3C?style=for-the-badge">
-  <img src="https://img.shields.io/badge/LangGraph-Workflow-1C3C3C?style=for-the-badge">
-  <img src="https://img.shields.io/badge/FAISS-Vector_Search-FF6F00?style=for-the-badge">
-  <img src="https://img.shields.io/badge/Groq-LLM-F55036?style=for-the-badge">
-  <img src="https://img.shields.io/badge/PostgreSQL-Database-4169E1?style=for-the-badge&logo=postgresql&logoColor=white">
+<p align="center">
+  <strong>Chat with YouTube videos and generate AI-powered MCQ quizzes using Retrieval-Augmented Generation (RAG)</strong>
 </p>
 
-</div>
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/Streamlit-App-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white" alt="Streamlit">
+  <img src="https://img.shields.io/badge/LangChain-RAG-1C3C3C?style=for-the-badge" alt="LangChain">
+  <img src="https://img.shields.io/badge/LangGraph-Workflow-1C3C3C?style=for-the-badge" alt="LangGraph">
+  <img src="https://img.shields.io/badge/FAISS-Vector_Search-FF6F00?style=for-the-badge" alt="FAISS">
+  <img src="https://img.shields.io/badge/Groq-LLM-F55036?style=for-the-badge" alt="Groq">
+  <img src="https://img.shields.io/badge/PostgreSQL-Database-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL">
+  <img src="https://img.shields.io/badge/ReportLab-PDF-B22222?style=for-the-badge" alt="ReportLab">
+</p>
+
+<p align="center">
+  <a href="#-overview">Overview</a> •
+  <a href="#-features">Features</a> •
+  <a href="#-architecture">Architecture</a> •
+  <a href="#-installation">Installation</a> •
+  <a href="#-usage">Usage</a>
+</p>
 
 ---
 
-<div style="border: 1px solid #d0d7de; border-radius: 12px; padding: 28px; background-color: #ffffff;">
-
-<h2>📌 Overview</h2>
-
-<p>
-<strong>AI YouTube Chatbot</strong> is a Streamlit-based conversational RAG application that allows users to interact with YouTube videos using their transcripts.
-</p>
-
-<p>
-Users can load a YouTube video, ask questions about its content, maintain multiple conversations, generate MCQ quizzes, submit quizzes, view scores and explanations, and download generated quizzes as PDF files.
-</p>
-
-<p>The application uses:</p>
-
-<ul>
-<li>YouTube transcripts as the knowledge source</li>
-<li>FAISS for semantic vector search</li>
-<li>MMR retrieval for diverse relevant context</li>
-<li>LangGraph for workflow orchestration</li>
-<li>Groq for LLM inference</li>
-<li>Hugging Face embeddings for semantic search</li>
-<li>PostgreSQL for persistent conversation checkpoints</li>
-<li>Streamlit for the user interface</li>
-<li>ReportLab for MCQ PDF generation</li>
-</ul>
-
-<hr>
-
-<h2>✨ Features</h2>
+## 📑 Table of Contents
 
 <table>
-<tr>
-<th>Feature</th>
-<th>Description</th>
-</tr>
-<tr>
-<td>🎬 YouTube Integration</td>
-<td>Load transcripts directly from YouTube URLs.</td>
-</tr>
-<tr>
-<td>🌐 Multi-language</td>
-<td>Supports English and Hindi transcript retrieval.</td>
-</tr>
-<tr>
-<td>✂️ Smart Chunking</td>
-<td>Splits transcripts into smaller retrieval-friendly chunks.</td>
-</tr>
-<tr>
-<td>🧠 Embeddings</td>
-<td>Uses <code>BAAI/bge-small-en-v1.5</code> for embeddings.</td>
-</tr>
-<tr>
-<td>🔎 Semantic Search</td>
-<td>Retrieves transcript sections relevant to user questions.</td>
-</tr>
-<tr>
-<td>🔀 MMR Retrieval</td>
-<td>Improves retrieval diversity and reduces redundant results.</td>
-</tr>
-<tr>
-<td>💾 FAISS</td>
-<td>Stores transcript embeddings locally.</td>
-</tr>
-<tr>
-<td>♻️ FAISS Caching</td>
-<td>Reuses an existing index when the same video is loaded again.</td>
-</tr>
-<tr>
-<td>🤖 Groq LLM</td>
-<td>Generates answers using the retrieved transcript context.</td>
-</tr>
-<tr>
-<td>🔗 LangGraph</td>
-<td>Manages retrieval, chat, and MCQ generation workflows.</td>
-</tr>
-<tr>
-<td>💬 Multiple Chats</td>
-<td>Allows users to create and switch between different conversations.</td>
-</tr>
-<tr>
-<td>📝 MCQ Generation</td>
-<td>Generates transcript-grounded multiple-choice questions.</td>
-</tr>
-<tr>
-<td>🎯 Difficulty Selection</td>
-<td>Supports Easy, Medium, and Hard quiz difficulty.</td>
-</tr>
-<tr>
-<td>📊 Quiz Evaluation</td>
-<td>Calculates the user's score and displays correct answers.</td>
-</tr>
-<tr>
-<td>📄 PDF Export</td>
-<td>Downloads generated MCQ quizzes as PDF files.</td>
-</tr>
-<tr>
-<td>🛡️ Grounded Answers</td>
-<td>Instructs the LLM to answer using transcript context only.</td>
-</tr>
+  <tr>
+    <th>#</th>
+    <th>Topic</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td><a href="#-overview">📌 Overview</a></td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td><a href="#-features">✨ Features</a></td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td><a href="#-architecture">🏗️ Architecture</a></td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td><a href="#-rag-pipeline">🔄 RAG Pipeline</a></td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td><a href="#-youtube-url-processing">🎬 YouTube URL Processing</a></td>
+  </tr>
+  <tr>
+    <td>6</td>
+    <td><a href="#-transcript-extraction">📜 Transcript Extraction</a></td>
+  </tr>
+  <tr>
+    <td>7</td>
+    <td><a href="#-text-chunking">✂️ Text Chunking</a></td>
+  </tr>
+  <tr>
+    <td>8</td>
+    <td><a href="#-embedding-generation">🧠 Embedding Generation</a></td>
+  </tr>
+  <tr>
+    <td>9</td>
+    <td><a href="#-faiss-vector-store">💾 FAISS Vector Store</a></td>
+  </tr>
+  <tr>
+    <td>10</td>
+    <td><a href="#-mmr-retrieval">🔎 MMR Retrieval</a></td>
+  </tr>
+  <tr>
+    <td>11</td>
+    <td><a href="#-llm-generation">🤖 LLM Generation</a></td>
+  </tr>
+  <tr>
+    <td>12</td>
+    <td><a href="#-conversation-memory">💬 Conversation Memory</a></td>
+  </tr>
+  <tr>
+    <td>13</td>
+    <td><a href="#-mcq-generation">📝 MCQ Generation</a></td>
+  </tr>
+  <tr>
+    <td>14</td>
+    <td><a href="#-mcq-quiz-system">🎯 MCQ Quiz System</a></td>
+  </tr>
+  <tr>
+    <td>15</td>
+    <td><a href="#-pdf-generation">📄 PDF Generation</a></td>
+  </tr>
+  <tr>
+    <td>16</td>
+    <td><a href="#-streamlit-interface">🎨 Streamlit Interface</a></td>
+  </tr>
+  <tr>
+    <td>17</td>
+    <td><a href="#-tech-stack">🧰 Tech Stack</a></td>
+  </tr>
+  <tr>
+    <td>18</td>
+    <td><a href="#-project-structure">📁 Project Structure</a></td>
+  </tr>
+  <tr>
+    <td>19</td>
+    <td><a href="#-environment-variables">🔐 Environment Variables</a></td>
+  </tr>
+  <tr>
+    <td>20</td>
+    <td><a href="#-installation">🚀 Installation</a></td>
+  </tr>
+  <tr>
+    <td>21</td>
+    <td><a href="#-usage">▶️ Usage</a></td>
+  </tr>
+  <tr>
+    <td>22</td>
+    <td><a href="#-example">🧪 Example</a></td>
+  </tr>
+  <tr>
+    <td>23</td>
+    <td><a href="#-hallucination-control">🛡️ Hallucination Control</a></td>
+  </tr>
+  <tr>
+    <td>24</td>
+    <td><a href="#-faiss-caching">♻️ FAISS Caching</a></td>
+  </tr>
+  <tr>
+    <td>25</td>
+    <td><a href="#-core-components">🧩 Core Components</a></td>
+  </tr>
+  <tr>
+    <td>26</td>
+    <td><a href="#-langgraph-state">🧠 LangGraph State</a></td>
+  </tr>
+  <tr>
+    <td>27</td>
+    <td><a href="#-langgraph-workflow">🔗 LangGraph Workflow</a></td>
+  </tr>
+  <tr>
+    <td>28</td>
+    <td><a href="#-limitations">⚠️ Limitations</a></td>
+  </tr>
+  <tr>
+    <td>29</td>
+    <td><a href="#-future-improvements">🔮 Future Improvements</a></td>
+  </tr>
+  <tr>
+    <td>30</td>
+    <td><a href="#-contributing">🤝 Contributing</a></td>
+  </tr>
+  <tr>
+    <td>31</td>
+    <td><a href="#-security">🔒 Security</a></td>
+  </tr>
+  <tr>
+    <td>32</td>
+    <td><a href="#-license">📄 License</a></td>
+  </tr>
+  <tr>
+    <td>33</td>
+    <td><a href="#-acknowledgements">🙏 Acknowledgements</a></td>
+  </tr>
+  <tr>
+    <td>34</td>
+    <td><a href="#-author">👨‍💻 Author</a></td>
+  </tr>
 </table>
 
-<hr>
+---
 
-<h2>🏗️ Architecture</h2>
+## 📌 Overview
 
-<pre>
-                    ┌─────────────────────┐
-                    │    YouTube URL      │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │  Extract Video ID   │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │ YouTube Transcript  │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │    Text Chunking    │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │     Embeddings      │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │   FAISS Vector DB   │
-                    └──────────┬──────────┘
-                               │
-                    ┌──────────┴──────────┐
-                    │                     │
-                    ▼                     ▼
-             ┌──────────────┐      ┌──────────────┐
-             │ User Question│      │ MCQ Request  │
-             └──────┬───────┘      └──────┬───────┘
-                    │                     │
-                    └──────────┬──────────┘
-                               ▼
-                    ┌─────────────────────┐
-                    │    MMR Retriever    │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │   Relevant Context  │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │      LangGraph      │
-                    └──────────┬──────────┘
-                               │
-                    ┌──────────┴──────────┐
-                    │                     │
-                    ▼                     ▼
-             ┌──────────────┐      ┌──────────────┐
-             │   Chat Node  │      │   MCQ Node   │
-             └──────┬───────┘      └──────┬───────┘
-                    │                     │
-                    ▼                     ▼
-             ┌──────────────┐      ┌──────────────┐
-             │   Groq LLM   │      │ MCQResponse  │
-             └──────┬───────┘      └──────┬───────┘
-                    │                     │
-                    ▼                     ▼
-             ┌──────────────┐      ┌──────────────┐
-             │ Final Answer │      │ Quiz + PDF   │
-             └──────────────┘      └──────────────┘
+**AI YouTube Chatbot** is a conversational **Retrieval-Augmented Generation (RAG)** application that allows users to ask questions about YouTube videos and generate multiple-choice quizzes using the video's transcript.
 
-                     PostgreSQL
-                         │
-                         ▼
-                  Conversation
-                   Checkpoints
-</pre>
+The application combines a Streamlit user interface, LangGraph workflow, FAISS vector retrieval, Groq-powered LLM generation, PostgreSQL conversation checkpoints, and ReportLab PDF generation.
 
-<hr>
+Instead of sending the entire transcript directly to an LLM, the application:
 
-<h2>🔄 RAG Pipeline</h2>
+- Extracts the YouTube transcript.
+- Splits the transcript into smaller chunks.
+- Converts chunks into vector embeddings.
+- Stores embeddings in FAISS.
+- Retrieves the most relevant transcript sections.
+- Passes the retrieved context to a Groq-powered LLM.
+- Maintains conversation history using LangGraph and PostgreSQL.
+- Generates transcript-grounded MCQs with configurable difficulty.
+- Allows users to take the generated quiz.
+- Calculates the user's score.
+- Generates a downloadable PDF containing questions, answers, and explanations.
 
-<pre>
-YouTube URL
-     ↓
-Video ID
-     ↓
+The result is a complete YouTube learning assistant that supports both conversational video analysis and transcript-grounded quiz generation.
+
+---
+
+## ✨ Features
+
+| Feature | Description |
+|---|---|
+| 🎬 YouTube Integration | Load transcripts directly from YouTube URLs |
+| 🌐 Multi-language | Supports English and Hindi transcript retrieval |
+| ✂️ Smart Chunking | Splits transcripts into retrieval-friendly chunks |
+| 🧠 Embeddings | Uses `BAAI/bge-small-en-v1.5` |
+| 🔎 Semantic Search | Finds transcript sections relevant to user questions |
+| 🔀 MMR Retrieval | Improves retrieval diversity and reduces redundant results |
+| 💾 FAISS | Stores embeddings locally for fast vector search |
+| ♻️ Index Caching | Reuses existing FAISS indexes for previously processed videos |
+| 🤖 Groq LLM | Generates fast AI responses using Groq |
+| 🔗 LangGraph | Manages retrieval, chat, and MCQ workflows |
+| 💬 Conversational Memory | Supports contextual follow-up questions |
+| 🐘 PostgreSQL | Persists LangGraph conversation checkpoints |
+| 📝 MCQ Generation | Generates transcript-grounded multiple-choice questions |
+| 🎚️ Difficulty Selection | Supports Easy, Medium, and Hard difficulty |
+| 🔢 Question Control | Allows users to generate 1–20 questions |
+| 🎯 Interactive Quiz | Users can select answers and submit the quiz |
+| 📊 Score Calculation | Calculates the user's score after submission |
+| 💡 Explanations | Displays explanations for every correct answer |
+| 📄 PDF Export | Downloads generated quizzes as PDF files |
+| 💬 Multiple Chats | Supports multiple independent chat sessions |
+| 🎥 Video Per Chat | Each chat can maintain its own YouTube video |
+| 🎨 Streamlit UI | Provides an interactive web-based interface |
+| 🛡️ Grounded Answers | Instructs the model to answer using transcript context only |
+
+---
+
+## 🏗️ Architecture
+
+The application follows a Retrieval-Augmented Generation architecture with separate paths for conversational chat and MCQ generation.
+
+```mermaid
+flowchart TD
+    A["🎬 YouTube URL"] --> B["Extract Video ID"]
+    B --> C["📜 Load Transcript"]
+    C --> D["✂️ Split Transcript"]
+    D --> E["🧠 Generate Embeddings"]
+    E --> F[("🔎 FAISS Vector Store")]
+
+    U["👤 User Question"] --> R["🔀 MMR Retriever"]
+    F --> R
+
+    R --> G["📚 Relevant Transcript Context"]
+    G --> H["🔗 LangGraph"]
+
+    H --> I{"Select Mode"}
+
+    I -->|Chat| J["🤖 Groq LLM"]
+    J --> K["💬 Final Answer"]
+
+    I -->|MCQ| L["📝 MCQ Structured Output"]
+    L --> M["🎯 Interactive Quiz"]
+    M --> N["📊 Score"]
+
+    L --> O["📄 ReportLab PDF"]
+
+    P[("🐘 PostgreSQL")] <--> H
+
+High-Level Flow
+YouTube Video
+      ↓
 Transcript
-     ↓
-Text Chunks
-     ↓
-Hugging Face Embeddings
-     ↓
+      ↓
+Text Chunking
+      ↓
+Embeddings
+      ↓
 FAISS
-     ↓
+      ↓
 MMR Retrieval
-     ↓
-Relevant Transcript Context
-     ↓
+      ↓
+Relevant Context
+      ↓
 LangGraph
-     ↓
-Groq LLM
-     ↓
-Final Answer
-</pre>
+      ↓
+ ┌───────────────┬────────────────┐
+ │               │                │
+ ▼               ▼                │
+Chat            MCQ               │
+ │               │                │
+ ▼               ▼                │
+Groq LLM       Structured MCQs    │
+ │               │                │
+ ▼               ▼                │
+Answer         Quiz + PDF         │
+ └───────────────┴────────────────┘
 
-<p>
-The application does not send the complete transcript to the LLM. Instead, it retrieves the most relevant transcript chunks and provides those chunks as context.
-</p>
+🔄 RAG Pipeline
+🎬 YouTube URL Processing
+The application accepts common YouTube URL formats.
 
-<hr>
-
-<h2>🎬 YouTube URL Processing</h2>
-
-<p>The application accepts common YouTube URL formats.</p>
-
-<pre>
+Standard YouTube URL
 https://www.youtube.com/watch?v=VIDEO_ID
 
+Short YouTube URL
 https://youtu.be/VIDEO_ID
-</pre>
 
-<p>
-The video ID is extracted using the project's <code>get_video_id()</code> utility.
-The video ID is also used to identify the corresponding FAISS index.
-</p>
+The video ID is extracted using the project's:
 
-<hr>
+get_video_id()
 
-<h2>📜 Transcript Extraction</h2>
+utility.
 
-<p>
-The application loads the YouTube transcript through the project's YouTube loader.
-The transcript configuration supports:
-</p>
+The extracted video ID is also used to identify the video and its associated FAISS index.
 
-<pre>
+📜 Transcript Extraction
+The application loads the YouTube transcript through the existing vector-store processing pipeline.
+
+The loader is configured to support:
+
 language=["en", "hi"]
-</pre>
 
-<p>The transcript is then passed to the chunking stage.</p>
+If a transcript cannot be found, the application raises an error instead of continuing with empty data.
 
-<pre>
+Transcript Flow
 YouTube URL
      ↓
 Video ID
      ↓
-Transcript Loader
+YoutubeLoader
      ↓
 Transcript Documents
-</pre>
 
-<hr>
+The transcript is then passed into the chunking and embedding pipeline before the conversational or MCQ workflow begins.
 
-<h2>✂️ Text Chunking</h2>
+✂️ Text Chunking
+Large transcripts are split into smaller chunks using:
 
-<p>
-Transcript documents are divided into smaller chunks before embeddings are generated.
-</p>
-
-<pre>
 RecursiveCharacterTextSplitter(
     chunk_size=800,
     chunk_overlap=150
 )
-</pre>
 
-<table>
-<tr>
-<th>Parameter</th>
-<th>Value</th>
-</tr>
-<tr>
-<td>Chunk Size</td>
-<td><code>800</code></td>
-</tr>
-<tr>
-<td>Chunk Overlap</td>
-<td><code>150</code></td>
-</tr>
-</table>
+Configuration
+Parameter	Value
+Chunk Size	800
+Chunk Overlap	150
 
-<p>
-The overlap helps preserve context between neighboring transcript chunks.
-</p>
+Chunk overlap helps preserve contextual information between neighboring chunks.
 
-<hr>
+┌──────────────────────────┐
+│        Chunk 1           │
+└────────────┬─────────────┘
+             │
+             │ overlap
+             ▼
+┌──────────────────────────┐
+│        Chunk 2           │
+└────────────┬─────────────┘
+             │
+             │ overlap
+             ▼
+┌──────────────────────────┐
+│        Chunk 3           │
+└──────────────────────────┘
 
-<h2>🧠 Embedding Generation</h2>
+🧠 Embedding Generation
+Each transcript chunk is converted into a vector representation using:
 
-<p>
-Each transcript chunk is converted into a numerical vector using:
-</p>
-
-<pre>
 BAAI/bge-small-en-v1.5
-</pre>
 
-<p>
-The project initializes the embedding model through the <code>get_embed()</code> function.
-These vectors are used for semantic similarity search.
-</p>
+through the project's embedding configuration.
 
-<pre>
+Embedding Flow
 Transcript Chunk
        ↓
 Embedding Model
        ↓
-Vector Representation
-       ↓
-FAISS
-</pre>
+Numerical Vector
 
-<hr>
+These vectors allow the system to perform semantic similarity searches.
 
-<h2>💾 FAISS Vector Store</h2>
+💾 FAISS Vector Store
+The generated embeddings are stored in FAISS.
 
-<p>
-FAISS is used as the local vector store for transcript embeddings.
-Each YouTube video gets its own cached index.
-</p>
+Each video receives its own local index:
 
-<pre>
 faiss_indexes/
 └── VIDEO_ID/
     ├── index.faiss
     └── index.pkl
-</pre>
 
-<p>This provides:</p>
+This provides two important benefits:
 
-<ul>
-<li>Fast similarity search</li>
-<li>Local vector storage</li>
-<li>Reuse of previously processed videos</li>
-<li>Reduced repeated embedding generation</li>
-</ul>
+Fast similarity search.
+Local caching of processed videos.
+The YouTubeAssistant.load_video() method initializes the embeddings, loads or creates the FAISS vector store, and creates the retriever.
 
-<hr>
+🔎 MMR Retrieval
+The application uses Maximum Marginal Relevance (MMR) retrieval:
 
-<h2>🔎 MMR Retrieval</h2>
-
-<p>
-The application uses Maximum Marginal Relevance retrieval.
-</p>
-
-<pre>
 vectorstore.as_retriever(
     search_type="mmr",
     search_kwargs={
@@ -376,563 +397,406 @@ vectorstore.as_retriever(
         "fetch_k": 20
     }
 )
-</pre>
 
-<table>
-<tr>
-<th>Parameter</th>
-<th>Value</th>
-<th>Purpose</th>
-</tr>
-<tr>
-<td>search_type</td>
-<td><code>mmr</code></td>
-<td>Uses Maximum Marginal Relevance</td>
-</tr>
-<tr>
-<td>k</td>
-<td><code>5</code></td>
-<td>Final documents returned</td>
-</tr>
-<tr>
-<td>fetch_k</td>
-<td><code>20</code></td>
-<td>Candidate documents considered</td>
-</tr>
-</table>
+Retrieval Configuration
+Parameter	Value	Purpose
+search_type	mmr	Maximum Marginal Relevance
+k	5	Number of final documents returned
+fetch_k	20	Number of candidate documents considered
 
-<p>
-MMR attempts to provide relevant and diverse transcript chunks instead of returning several nearly identical chunks.
-</p>
+MMR attempts to balance:
 
-<hr>
+Relevance
+    +
+Diversity
+    ↓
+Better Context
 
-<h2>🤖 LLM Generation</h2>
+This can help prevent the model from receiving several nearly identical transcript chunks.
 
-<p>The application uses Groq for LLM inference.</p>
+🤖 LLM Generation
+After retrieval, the relevant transcript chunks are passed to the LLM.
 
-<pre>
-ChatGroq(
-    model="openai/gpt-oss-20b",
-    temperature=0.3
-)
-</pre>
+The project initializes the LLM through:
 
-<p>The chat generation flow is:</p>
+create_llm()
 
-<pre>
+The current application uses a Groq-powered model configured by the project.
+
+Generation Pipeline
 User Question
       ↓
-MMR Retriever
+Retriever
       ↓
 Relevant Documents
       ↓
-Transcript Context
+Context
       ↓
 Chat Prompt
       ↓
 Groq LLM
       ↓
 Answer
-</pre>
 
-<hr>
+The chat system prompt explicitly instructs the model to use the retrieved transcript context rather than inventing information.
 
-<h2>💬 Conversation Memory</h2>
+💬 Conversation Memory
+The application uses LangGraph + PostgreSQL for persistent conversation state.
 
-<p>
-Conversation state is maintained using LangGraph with PostgreSQL checkpoints.
-Every chat has its own unique <code>thread_id</code>.
-</p>
+Every conversation is associated with a unique:
 
-<pre>
-thread_id = UUID
-</pre>
+thread_id
 
-<p>Example:</p>
+Example:
 
-<pre>
-{
+config = {
     "configurable": {
         "thread_id": "conversation-1"
     }
 }
-</pre>
 
-<p>
-This allows the chatbot to maintain context across follow-up questions.
-</p>
+The Streamlit application creates a unique UUID for every new chat.
 
-<pre>
-User:
-What is the main topic?
+Example:
 
-Assistant:
-The video discusses artificial intelligence.
+first_chat_id = str(uuid.uuid4())
 
-User:
+Each chat stores:
+
+title
+thread_id
+video_url
+video_id
+messages
+mcqs
+quiz_submitted
+score
+
+This allows users to maintain multiple independent conversations.
+
+Example Conversation
+👤 User:
+What is the main topic of the video?
+
+🤖 Assistant:
+The video discusses artificial intelligence...
+
+👤 User:
 What are the three main points?
 
-Assistant:
+🤖 Assistant:
 The three main points are...
 
-User:
-Explain the second one.
+👤 User:
+Can you explain the second one?
 
-Assistant:
+🤖 Assistant:
 The second point refers to...
-</pre>
 
-<hr>
+The conversation history helps resolve references such as:
 
-<h2>💬 Multiple Chat Support</h2>
+"this"
+"that"
+"the second point"
+"explain it again"
+"what about the previous point?"
+The transcript remains the factual source.
 
-<p>
-The Streamlit application supports multiple independent conversations.
-Each chat contains:
-</p>
+📝 MCQ Generation
+The updated application introduces a dedicated MCQ generation workflow.
 
-<ul>
-<li>Unique chat ID</li>
-<li>Unique thread ID</li>
-<li>Chat title</li>
-<li>YouTube URL</li>
-<li>YouTube video ID</li>
-<li>Chat messages</li>
-<li>Generated MCQs</li>
-<li>Quiz score</li>
-<li>Quiz submission state</li>
-</ul>
+Users can open the MCQ interface from the chat composer using:
 
-<p>Each new chat is created using a UUID:</p>
+＋ → 📝 Generate MCQs
 
-<pre>
-chat_id = str(uuid.uuid4())
-</pre>
+The user can configure:
 
-<p>
-Users can switch between chats from the sidebar.
-When an old chat is selected, its associated video's FAISS index is loaded again.
-</p>
+Number of questions.
+Difficulty level.
+Number of Questions
+The application supports:
 
-<hr>
+1 → 20 questions
 
-<h2>📝 MCQ Generation</h2>
+Difficulty
+The supported difficulty levels are:
 
-<p>
-The application includes a dedicated MCQ generation mode.
-Users can choose:
-</p>
+Easy
+Medium
+Hard
 
-<ul>
-<li>Number of questions: 1–20</li>
-<li>Difficulty: Easy, Medium, Hard</li>
-</ul>
+The YouTubeAssistant.generate_mcqs() method sends the MCQ request through the same LangGraph workflow used by the application.
 
-<p>The MCQ generation flow is:</p>
+response = self.graph.invoke(
+    {
+        "question": "Generate important MCQs from the video.",
+        "mode": "mcq",
+        "number": number,
+        "difficulty": difficulty
+    },
+    config=config
+)
 
-<pre>
-YouTube Transcript
-       ↓
-MMR Retrieval
-       ↓
-Relevant Context
-       ↓
+🎯 MCQ Quiz System
+MCQ Structured Output
+The application uses Pydantic models to enforce a predictable MCQ structure.
+
+MCQ Model
+class MCQ(BaseModel):
+    question: str
+    option_a: str
+    option_b: str
+    option_c: str
+    option_d: str
+    correct_answer: Literal["A", "B", "C", "D"]
+    explanation: str
+
+Each question contains:
+
+Question
+    ↓
+Option A
+Option B
+Option C
+Option D
+    ↓
+Correct Answer
+    ↓
+Explanation
+
+The complete response is represented by:
+
+class MCQResponse(BaseModel):
+    questions: List[MCQ]
+
+The LLM is configured with:
+
+llm.with_structured_output(MCQResponse)
+
+This allows the application to receive structured MCQ data instead of parsing unstructured text.
+
+🛡️ MCQ Grounding
+The MCQ prompt contains strict transcript-grounding instructions.
+
+The model is instructed to:
+
+Generate exactly {number} questions.
+
+and:
+
+Use ONLY information explicitly present in the transcript.
+
+It is also instructed to:
+
+Never use outside knowledge.
+Never invent information.
+Generate exactly four options.
+Generate exactly one correct option.
+Use A, B, C, and D.
+Provide an explanation.
+Avoid duplicate questions.
+Test understanding of the transcript.
+Follow the selected difficulty.
+MCQ Generation Flow
+User
+ ↓
+Select Number
+ ↓
+Select Difficulty
+ ↓
+LangGraph
+ ↓
+MMR Retriever
+ ↓
+Relevant Transcript Context
+ ↓
 MCQ Prompt
-       ↓
+ ↓
 Structured LLM Output
-       ↓
+ ↓
 MCQResponse
-       ↓
-Quiz
-</pre>
+ ↓
+Interactive Quiz
 
-<p>
-The MCQs are generated using structured Pydantic output.
-</p>
+🎯 MCQ Quiz System
+After MCQs are generated, the application displays them as an interactive quiz.
 
-<hr>
+Each question is displayed with four options:
 
-<h2>🎯 MCQ Structure</h2>
+A. Option A
+B. Option B
+C. Option C
+D. Option D
 
-<pre>
-MCQ
-├── question
-├── option_a
-├── option_b
-├── option_c
-├── option_d
-├── correct_answer
-└── explanation
-</pre>
+The user selects an answer using Streamlit radio buttons.
 
-<p>The correct answer is restricted to:</p>
+Quiz Submission
+When the user clicks:
 
-<pre>
-A
-B
-C
-D
-</pre>
+✅ Submit Quiz
 
-<p>
-The application instructs the model to generate exactly the requested number of questions and use only information available in the transcript.
-</p>
+the application compares the selected answer with:
 
-<hr>
+mcq.correct_answer
 
-<h2>📊 Quiz Evaluation</h2>
+The score is calculated as:
 
-<p>
-After MCQs are generated, users can select an answer for every question and submit the quiz.
-</p>
+Correct Answers
+───────────────
+Total Questions
 
-<pre>
-Selected Answers
-       ↓
-Compare with correct_answer
-       ↓
-Calculate Score
-       ↓
-Display Result
-</pre>
-
-<p>Example:</p>
-
-<pre>
+Example
 Your score: 4/5
-</pre>
 
-<p>
-After submission, the application also displays the correct answer and explanation for every question.
-</p>
+After submission, the application displays:
 
-<hr>
+Answers & Explanations
 
-<h2>📄 MCQ PDF Generation</h2>
+for every generated question.
 
-<p>
-Generated quizzes can be downloaded as PDF files using ReportLab.
-</p>
+📄 PDF Generation
+The application provides a PDF download option for generated MCQs.
 
-<pre>
+The PDF is generated using:
+
+generate_mcq_pdf()
+
+from:
+
+backend/utils/pdf_generator.py
+
+The PDF is generated in memory using:
+
+BytesIO()
+
+and returned as bytes.
+
+PDF Contents
+The generated PDF contains:
+
+MCQ
+Multiple Choice Quiz
+
+Difficulty: Medium
+Total Questions: 5
+
+Quiz Questions
+    ↓
+Question 1
+A. ...
+B. ...
+C. ...
+D. ...
+
+Question 2
+A. ...
+B. ...
+C. ...
+D. ...
+
+...
+
+Answer Key & Explanations
+    ↓
+Correct Answer
+Explanation
+
+PDF Flow
 Generated MCQs
       ↓
 generate_mcq_pdf()
       ↓
 ReportLab
       ↓
+BytesIO
+      ↓
 PDF Bytes
       ↓
-Streamlit Download
-</pre>
+Streamlit Download Button
 
-<p>The generated PDF contains:</p>
+The user can download the quiz using:
 
-<ul>
-<li>Quiz title</li>
-<li>Difficulty</li>
-<li>Total number of questions</li>
-<li>All MCQ questions</li>
-<li>Four options for each question</li>
-<li>Answer key</li>
-<li>Explanations</li>
-</ul>
+📄 Download MCQ Quiz as PDF
 
-<p>The PDF is generated in memory using <code>BytesIO</code>, so no temporary PDF file is required.</p>
+The PDF includes both the questions and the answer key with explanations.
 
-<hr>
+🎨 Streamlit Interface
+The updated application uses Streamlit as the frontend.
 
-<h2>🛡️ Hallucination Control</h2>
+The application is configured with:
 
-<p>The chat system prompt instructs the model:</p>
+st.set_page_config(
+    page_title="YouTube AI",
+    page_icon="▶️",
+    layout="wide",
+    initial_sidebar_state="expanded",
+)
 
-<pre>
-Answer ONLY using the provided video transcript context.
-</pre>
+Main Interface
+The UI contains:
 
-<p>
-If the requested information is not available in the retrieved context, the model is instructed to respond:
-</p>
+┌─────────────────────────────────────────────────────┐
+│                 YouTube Assistant                   │
+├──────────────────────┬──────────────────────────────┤
+│                      │                              │
+│  YouTube URL         │      YouTube Video           │
+│                      │                              │
+│  ▶ Load Video        │                              │
+│                      │      Chat Messages           │
+│  ＋ New Chat          │                              │
+│                      │                              │
+│  Chats               │      Chat Composer           │
+│                      │                              │
+└──────────────────────┴──────────────────────────────┘
 
-<pre>
-The video doesn't mention this
-</pre>
+Sidebar
+The sidebar provides:
 
-<p>
-The MCQ generator also follows transcript-only generation rules.
-It is instructed not to use outside knowledge or invent information.
-</p>
+YouTube URL input.
+Load Video button.
+New Chat button.
+Chat history.
+Previous chat selection.
+Chat Composer
+The chat composer contains:
 
-<p>
-<strong>Important:</strong> RAG does not guarantee zero hallucinations. Final answer quality depends on transcript quality, retrieval quality, prompt adherence, and model behavior.
-</p>
+＋    Ask anything about this video...    ↑
 
-<hr>
+The plus menu currently provides:
 
-<h2>♻️ FAISS Caching</h2>
+📝 Generate MCQs
 
-<p>
-The application checks for an existing FAISS index before processing the video again.
-</p>
+Video Player
+Once a video is loaded, the application displays it using:
 
-<h3>First Load</h3>
+st.video(
+    f"https://www.youtube.com/watch?v={video_id}"
+)
 
-<pre>
-YouTube URL
-     ↓
-Video ID
-     ↓
-Load Transcript
-     ↓
-Chunk Transcript
-     ↓
-Generate Embeddings
-     ↓
-Create FAISS
-     ↓
-Save Index
-</pre>
+🧰 Tech Stack
+Technology	Role
+🐍 Python	Application development
+🎨 Streamlit	Web application interface
+🦜 LangChain	LLM and RAG components
+🔗 LangGraph	Stateful workflow orchestration
+🤗 Hugging Face	Embedding generation
+🧠 BGE Small EN v1.5	Text embeddings
+🔎 FAISS	Vector similarity search
+⚡ Groq	LLM inference
+🤖 Groq LLM	Chat and MCQ generation
+🐘 PostgreSQL	Conversation checkpoint storage
+▶️ YoutubeLoader	Transcript extraction
+📝 Pydantic	Structured MCQ output
+📄 ReportLab	PDF generation
+🎨 Custom CSS	Streamlit UI styling
 
-<h3>Next Load</h3>
-
-<pre>
-YouTube URL
-     ↓
-Video ID
-     ↓
-Check FAISS
-     ↓
-Existing Index
-     ↓
-Load Index
-</pre>
-
-<p>
-This reduces unnecessary transcript processing and embedding generation when a video has already been processed.
-</p>
-
-<hr>
-
-<h2>🧠 LangGraph Workflow</h2>
-
-<pre>
-                    START
-                      │
-                      ▼
-               ┌─────────────┐
-               │   Retrieve  │
-               └──────┬──────┘
-                      │
-                Check Mode
-                 /        \
-                /          \
-               ▼            ▼
-        ┌──────────┐   ┌──────────┐
-        │   Chat   │   │   MCQ    │
-        └────┬─────┘   └────┬─────┘
-             │              │
-             ▼              ▼
-            END            END
-</pre>
-
-<h3>Retrieve Node</h3>
-
-<p>
-The retrieve node receives the question and searches the FAISS retriever.
-The retrieved documents are converted into a context string.
-</p>
-
-<pre>
-Question
-   ↓
-Retriever
-   ↓
-Documents
-   ↓
-Context
-</pre>
-
-<h3>Chat Node</h3>
-
-<pre>
-Context
-   +
-Conversation Messages
-   +
-Question
-   ↓
-Chat Prompt
-   ↓
-Groq LLM
-   ↓
-Answer
-</pre>
-
-<h3>MCQ Node</h3>
-
-<pre>
-Context
-   +
-Number
-   +
-Difficulty
-   ↓
-MCQ Prompt
-   ↓
-Structured LLM
-   ↓
-MCQResponse
-</pre>
-
-<hr>
-
-<h2>🧩 Core Components</h2>
-
-<table>
-<tr>
-<th>Component</th>
-<th>Responsibility</th>
-</tr>
-<tr>
-<td><code>get_video_id()</code></td>
-<td>Extracts the YouTube video ID.</td>
-</tr>
-<tr>
-<td><code>get_embed()</code></td>
-<td>Initializes the embedding model.</td>
-</tr>
-<tr>
-<td><code>get_vectorstore()</code></td>
-<td>Creates or loads the FAISS vector store.</td>
-</tr>
-<tr>
-<td><code>create_retriever()</code></td>
-<td>Creates the MMR retriever.</td>
-</tr>
-<tr>
-<td><code>create_llm()</code></td>
-<td>Initializes the Groq LLM.</td>
-</tr>
-<tr>
-<td><code>build_graph()</code></td>
-<td>Builds the LangGraph workflow.</td>
-</tr>
-<tr>
-<td><code>create_mcq_chain()</code></td>
-<td>Creates the structured MCQ generation chain.</td>
-</tr>
-<tr>
-<td><code>generate_mcq_pdf()</code></td>
-<td>Creates the downloadable MCQ PDF.</td>
-</tr>
-<tr>
-<td><code>YouTubeAssistant</code></td>
-<td>Main interface for video loading, chat, and MCQ generation.</td>
-</tr>
-<tr>
-<td><code>Database</code></td>
-<td>Manages PostgreSQL conversation checkpoints.</td>
-</tr>
-</table>
-
-<hr>
-
-<h2>🧠 LangGraph State</h2>
-
-<pre>
-class YTChatState(TypedDict, total=False):
-    question: str
-    context: str
-    answer: str
-    documents: List[Document]
-    messages: Annotated[List[BaseMessage], add_messages]
-    mode: str
-    number: int
-    difficulty: str
-    mcqs: object
-</pre>
-
-<p>The state contains:</p>
-
-<ul>
-<li>User question</li>
-<li>Retrieved context</li>
-<li>Generated answer</li>
-<li>Retrieved documents</li>
-<li>Conversation messages</li>
-<li>Current mode</li>
-<li>Number of MCQs</li>
-<li>Difficulty</li>
-<li>Generated MCQs</li>
-</ul>
-
-<hr>
-
-<h2>🧰 Tech Stack</h2>
-
-<table>
-<tr>
-<th>Technology</th>
-<th>Role</th>
-</tr>
-<tr>
-<td>🐍 Python</td>
-<td>Application development</td>
-</tr>
-<tr>
-<td>🎨 Streamlit</td>
-<td>User interface</td>
-</tr>
-<tr>
-<td>🦜 LangChain</td>
-<td>LLM and RAG components</td>
-</tr>
-<tr>
-<td>🔗 LangGraph</td>
-<td>Workflow orchestration</td>
-</tr>
-<tr>
-<td>🤗 Hugging Face</td>
-<td>Embedding generation</td>
-</tr>
-<tr>
-<td>🧠 BGE Small EN v1.5</td>
-<td>Text embeddings</td>
-</tr>
-<tr>
-<td>🔎 FAISS</td>
-<td>Vector similarity search</td>
-</tr>
-<tr>
-<td>⚡ Groq</td>
-<td>LLM inference</td>
-</tr>
-<tr>
-<td>🤖 GPT-OSS-20B</td>
-<td>Language model</td>
-</tr>
-<tr>
-<td>🐘 PostgreSQL</td>
-<td>Conversation checkpoint storage</td>
-</tr>
-<tr>
-<td>📄 ReportLab</td>
-<td>PDF generation</td>
-</tr>
-</table>
-
-<hr>
-
-<h2>📁 Project Structure</h2>
-
-<pre>
+📁 Project Structure
 ai-yt-chatbot/
 │
+├── app.py
+├── styles.py
+│
 ├── backend/
-│   │
-│   ├── assistant/
-│   │   └── youtube_assistant.py
 │   │
 │   ├── config/
 │   │   └── settings.py
@@ -958,400 +822,580 @@ ai-yt-chatbot/
 │   ├── database/
 │   │   └── postgres.py
 │   │
+│   ├── assistant/
+│   │   └── youtube_assistant.py
+│   │
 │   └── utils/
 │       └── pdf_generator.py
 │
 ├── faiss_indexes/
-│   └── &lt;video_id&gt;/
+│   └── <video_id>/
 │       ├── index.faiss
 │       └── index.pkl
 │
-├── app.py
-├── styles.py
 ├── .env
 ├── .gitignore
 ├── requirements.txt
 └── README.md
-</pre>
 
-<hr>
+Update the structure above if your actual repository uses different filenames or folders.
 
-<h2>🔐 Environment Variables</h2>
+🔐 Environment Variables
+Create a .env file in the project root.
 
-<p>Create a <code>.env</code> file in the project root.</p>
-
-<pre>
 HF_TOKEN=your_huggingface_token
 GROQ_API_KEY=your_groq_api_key
 POSTGRES_URL=your_postgresql_connection_string
-</pre>
 
-<table>
-<tr>
-<th>Variable</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-<tr>
-<td><code>HF_TOKEN</code></td>
-<td>✅</td>
-<td>Hugging Face authentication token.</td>
-</tr>
-<tr>
-<td><code>GROQ_API_KEY</code></td>
-<td>✅</td>
-<td>Groq API key.</td>
-</tr>
-<tr>
-<td><code>POSTGRES_URL</code></td>
-<td>✅</td>
-<td>PostgreSQL connection string.</td>
-</tr>
-</table>
+Variables
+Variable	Required	Description
+HF_TOKEN	✅	Hugging Face authentication token
+GROQ_API_KEY	✅	Groq API key
+POSTGRES_URL	✅	PostgreSQL connection string
 
-<p>Example:</p>
-
-<pre>
+Example
 POSTGRES_URL=postgresql://username:password@localhost:5432/youtube_chat
-</pre>
 
-<p>⚠️ Never commit your <code>.env</code> file to GitHub.</p>
+⚠️ Never commit .env to GitHub.
 
-<hr>
-
-<h2>🚀 Installation</h2>
-
-<h3>1. Clone the Repository</h3>
-
-<pre>
+🚀 Installation
+1. Clone the Repository
 git clone https://github.com/YOUR_USERNAME/ai-yt-chatbot.git
 cd ai-yt-chatbot
-</pre>
 
-<h3>2. Create a Virtual Environment</h3>
+Replace YOUR_USERNAME with your GitHub username.
 
-<p><strong>Windows:</strong></p>
-
-<pre>
+2. Create a Virtual Environment
+Windows
 python -m venv venv
 venv\Scripts\activate
-</pre>
 
-<p><strong>Linux / macOS:</strong></p>
-
-<pre>
+Linux / macOS
 python3 -m venv venv
 source venv/bin/activate
-</pre>
 
-<h3>3. Install Dependencies</h3>
-
-<pre>
+3. Install Dependencies
 pip install -r requirements.txt
-</pre>
 
-<h3>4. Configure Environment Variables</h3>
+4. Configure Environment Variables
+Create:
 
-<pre>
+.env
+
+Add:
+
 HF_TOKEN=your_huggingface_token
 GROQ_API_KEY=your_groq_api_key
 POSTGRES_URL=your_postgresql_connection_string
-</pre>
 
-<h3>5. Configure PostgreSQL</h3>
+5. Configure PostgreSQL
+Make sure PostgreSQL is running and the database specified in POSTGRES_URL exists.
 
-<p>
-Make sure PostgreSQL is running and the database specified in <code>POSTGRES_URL</code> exists.
-</p>
+The application initializes the LangGraph PostgreSQL checkpointer through the database abstraction:
 
-<hr>
+self.checkpointer = self.database.initialize()
 
-<h2>▶️ Usage</h2>
+The checkpointer is then passed into:
 
-<h3>Start the Application</h3>
+build_graph(
+    self.retriever,
+    self.model,
+    self.checkpointer
+)
 
-<pre>
+▶️ Usage
+Run the Streamlit Application
+Start the application using:
+
 streamlit run app.py
-</pre>
 
-<p>
-The Streamlit application will open in your browser.
-</p>
+Streamlit will start the local web application.
 
-<h3>Load a Video</h3>
+Load a YouTube Video
+Open the application and paste a YouTube URL into the sidebar.
 
-<ol>
-<li>Paste a YouTube URL into the sidebar.</li>
-<li>Click <strong>Load Video</strong>.</li>
-<li>Wait for the transcript and FAISS index to load.</li>
-<li>Start asking questions.</li>
-</ol>
-
-<h3>Ask Questions</h3>
-
-<pre>
-What is the main topic of this video?
-</pre>
-
-<h3>Generate MCQs</h3>
-
-<ol>
-<li>Click the <strong>＋</strong> button beside the chat input.</li>
-<li>Select <strong>Generate MCQs</strong>.</li>
-<li>Select the number of questions.</li>
-<li>Select the difficulty.</li>
-<li>Click <strong>Generate MCQs</strong>.</li>
-</ol>
-
-<h3>Download Quiz</h3>
-
-<p>
-After generating the quiz, click:
-</p>
-
-<pre>
-📄 Download MCQ Quiz as PDF
-</pre>
-
-<h3>Submit Quiz</h3>
-
-<p>
-Select answers and click:
-</p>
-
-<pre>
-✅ Submit Quiz
-</pre>
-
-<p>
-The application displays your score along with the correct answers and explanations.
-</p>
-
-<hr>
-
-<h2>🧪 Example</h2>
-
-<h3>Step 1 — Load Video</h3>
-
-<pre>
+YouTube URL:
 https://www.youtube.com/watch?v=VIDEO_ID
-</pre>
 
-<h3>Step 2 — Ask a Question</h3>
+Then click:
 
-<pre>
-What are the main points discussed in this video?
-</pre>
+▶ Load Video
 
-<h3>Step 3 — Chatbot Processing</h3>
+The application will:
 
-<pre>
+YouTube URL
+     ↓
+Extract Video ID
+     ↓
+Initialize Embeddings
+     ↓
+Load/Create FAISS
+     ↓
+Create Retriever
+     ↓
+Initialize PostgreSQL Checkpointer
+     ↓
+Build LangGraph
+     ↓
+Video Ready
+
+Ask a Question
+After loading the video, enter a question into the chat composer:
+
+What is the main topic of this video?
+
+The assistant retrieves relevant transcript chunks and generates a grounded answer.
+
+💬 Follow-up Questions
+You can continue asking questions in the same chat.
+
+👤 User:
+What is the main topic?
+
+🤖 Assistant:
+The video discusses...
+
+👤 User:
+What are the important points?
+
+🤖 Assistant:
+The important points are...
+
+👤 User:
+Explain the second one.
+
+🤖 Assistant:
+The second point refers to...
+
+The same thread_id is used to maintain conversation state.
+
+📝 Generate MCQs
+To generate a quiz:
+
+＋
+ ↓
+📝 Generate MCQs
+
+Choose:
+
+Number of questions:
+1–20
+
+and:
+
+Difficulty:
+Easy / Medium / Hard
+
+Then click:
+
+📝 Generate MCQs
+
+The application retrieves transcript context and generates structured MCQs.
+
+🎯 Take the Quiz
+After generation:
+
+Read each question.
+Select one of the four options.
+Click Submit Quiz.
+View your score.
+Review correct answers and explanations.
+📄 Download the Quiz as PDF
+After MCQs are generated, click:
+
+📄 Download MCQ Quiz as PDF
+
+The application generates a PDF containing:
+
+Quiz questions.
+Four options per question.
+Difficulty.
+Total question count.
+Answer key.
+Explanations.
+🧹 Closing the Assistant
+The assistant provides a close method:
+
+assistant.close()
+
+This closes the database connection through:
+
+self.database.close()
+
+🧪 Example
+Input
+YouTube URL:
+https://www.youtube.com/watch?v=VIDEO_ID
+
+Question
+What are the main points discussed in the video?
+
+Processing
 Question
    ↓
-MMR Retrieval
+Embedding / Retrieval
    ↓
-Relevant Transcript Chunks
+FAISS
+   ↓
+Top Relevant Chunks
    ↓
 LangGraph
    ↓
 Groq LLM
    ↓
 Answer
-</pre>
 
-<h3>Step 4 — Generate Quiz</h3>
-
-<pre>
+MCQ Mode
+User
+   ↓
+Generate MCQs
+   ↓
+Select:
+   ├── Number: 5
+   └── Difficulty: Medium
+   ↓
+LangGraph
+   ↓
+Retriever
+   ↓
 Transcript Context
-      ↓
-MCQ Chain
-      ↓
-Structured MCQResponse
-      ↓
-Quiz
-</pre>
+   ↓
+Structured MCQ LLM
+   ↓
+MCQResponse
+   ↓
+Interactive Quiz
 
-<h3>Step 5 — Download PDF</h3>
+Quiz Result
+👤 User:
+Submit Quiz
 
-<pre>
-Quiz
- ↓
-ReportLab
- ↓
+🤖 YouTube AI:
+Your score: 4/5
+
 PDF
- ↓
+Generated MCQs
+      ↓
+ReportLab
+      ↓
+PDF
+      ↓
 Download
-</pre>
 
-<hr>
+🛡️ Hallucination Control
+The chat system prompt contains the following core instruction:
 
-<h2>⚠️ Limitations</h2>
+Answer ONLY using the provided video transcript context.
 
-<ul>
-<li>YouTube transcripts must be available.</li>
-<li>Transcript retrieval depends on YouTube availability.</li>
-<li>Current transcript language configuration focuses on English and Hindi.</li>
-<li>FAISS indexes are stored locally.</li>
-<li>PostgreSQL is required for persistent conversation checkpoints.</li>
-<li>Retrieval quality depends on chunking, embeddings, and query quality.</li>
-<li>LLM responses may still contain occasional hallucinations.</li>
-<li>Multiple chats currently share the same assistant instance.</li>
-<li>Only one YouTube video is associated with each chat.</li>
-<li>There is currently no authentication system.</li>
-</ul>
+If the requested information is not present in the retrieved context, the model is instructed to return:
 
-<hr>
+The video doesn't mention this
 
-<h2>🔮 Future Improvements</h2>
+Grounding Strategy
+Yes
+No
+👤 User Question
+🔎 Retriever
+Relevant Transcript?
+📚 Provide Context to LLM
+🤖 Generate Grounded Answer
+The video doesn't mention this
+The MCQ system follows the same grounding principle.
 
-<ul>
-<li>🌐 FastAPI backend</li>
-<li>🎨 Improved frontend</li>
-<li>🔐 User authentication</li>
-<li>👥 Multi-user support</li>
-<li>🎬 Multiple videos per conversation</li>
-<li>🌍 Automatic language detection</li>
-<li>🗣️ More transcript languages</li>
-<li>⏱️ Clickable timestamp citations</li>
-<li>📚 Source citations in answers</li>
-<li>🔎 Hybrid keyword + semantic retrieval</li>
-<li>🧠 Reranking models</li>
-<li>✍️ Query rewriting</li>
-<li>🐳 Docker support</li>
-<li>🧪 Automated tests</li>
-<li>🚀 GitHub Actions CI/CD</li>
-<li>📊 RAG evaluation metrics</li>
-<li>🔭 LangSmith observability</li>
-</ul>
+The MCQ prompt explicitly instructs the model:
 
-<hr>
+Use ONLY information explicitly present in the transcript.
 
-<h2>🤝 Contributing</h2>
+It also prohibits:
 
-<p>Contributions are welcome!</p>
+Outside knowledge.
+Invented information.
+Unsupported facts.
+Note: RAG cannot guarantee zero hallucinations. The final response still depends on transcript quality, retrieval quality, prompt adherence, and model behavior.
 
-<h3>1. Fork the Repository</h3>
+♻️ FAISS Caching
+The application avoids repeatedly processing the same video.
 
-<p>Click the <strong>Fork</strong> button on GitHub.</p>
+First Request
+YouTube URL
+     ↓
+Extract Video ID
+     ↓
+Load Transcript
+     ↓
+Chunk Transcript
+     ↓
+Generate Embeddings
+     ↓
+Create FAISS
+     ↓
+Save FAISS
 
-<h3>2. Clone Your Fork</h3>
+Subsequent Request
+YouTube URL
+     ↓
+Extract Video ID
+     ↓
+Check FAISS Index
+     ↓
+Index Exists
+     ↓
+Load Existing FAISS
 
-<pre>
+The index is stored using:
+
+faiss_indexes/<video_id>/
+
+This can significantly reduce repeated transcript processing and embedding calls.
+
+The YouTubeAssistant then creates a retriever from the loaded vector store:
+
+self.retriever = create_retriever(vectorstore)
+
+🧩 Core Components
+Component	Responsibility
+get_video_id()	Extracts the YouTube video ID
+get_embed()	Initializes Hugging Face embeddings
+get_vectorstore()	Creates or loads FAISS
+create_retriever()	Creates the MMR retriever
+create_llm()	Initializes the LLM
+create_mcq_chain()	Creates the structured MCQ generation chain
+build_graph()	Creates the LangGraph workflow
+retrieve_node()	Retrieves relevant transcript documents
+chat_node()	Generates grounded chat responses
+mcq_node()	Generates structured MCQs
+Database	Manages PostgreSQL checkpointer
+YouTubeAssistant	Main application interface
+generate_mcq_pdf()	Generates downloadable MCQ PDFs
+create_new_chat()	Creates a new Streamlit chat session
+load_chat_video()	Loads the selected chat's video index
+
+🧠 LangGraph State
+The chatbot maintains a structured state:
+
+class YTChatState(TypedDict, total=False):
+    question: str
+    context: str
+    answer: str
+    documents: List[Document]
+    messages: Annotated[List[BaseMessage], add_messages]
+    mode: str
+    number: int
+    difficulty: str
+    mcqs: object
+
+This allows the graph to pass:
+
+User questions.
+Retrieved context.
+Documents.
+Generated answers.
+Conversation messages.
+Workflow mode.
+Number of MCQs.
+Difficulty.
+Generated MCQs.
+between workflow nodes.
+
+🔗 LangGraph Workflow
+The updated workflow now supports two modes:
+
+chat
+mcq
+
+chat
+mcq
+["START"]
+🔎 Retrieve Node
+Mode?
+💬 Chat Node
+📝 MCQ Node
+["END"]
+Retrieve Node
+Question
+   ↓
+Retriever
+   ↓
+Relevant Documents
+   ↓
+Context
+
+The retrieve node calls:
+
+docs = retriever.invoke(query)
+
+and creates a context string containing the retrieved transcript content.
+
+Router Node
+The workflow checks:
+
+mode = state.get("mode", "chat")
+
+If:
+
+mode == "mcq"
+
+the graph routes to the MCQ node.
+
+Otherwise, it routes to the chat node.
+
+                 ┌── chat ──→ Chat Node
+Retrieve → Router
+                 └── mcq ──→ MCQ Node
+
+Chat Node
+The chat node uses:
+
+chat_prompt | model | StrOutputParser()
+
+It receives:
+
+Context
++
+Conversation Messages
+
+and generates the final answer.
+
+The response is stored as:
+
+{
+    "answer": response,
+    "messages": [AIMessage(content=response)]
+}
+
+MCQ Node
+The MCQ node uses:
+
+mcq_chain = create_mcq_chain(model)
+
+The chain uses structured output:
+
+structured_llm = llm.with_structured_output(MCQResponse)
+
+The MCQ node receives:
+
+Context
+Number
+Difficulty
+
+and returns:
+
+{
+    "mcqs": result
+}
+
+⚠️ Limitations
+Current limitations include:
+
+YouTube transcripts must be available.
+Transcript retrieval depends on YouTube availability and configuration.
+Current language configuration focuses on English and Hindi.
+FAISS indexes are stored locally.
+PostgreSQL is required for persistent conversation state.
+Retrieval quality depends on chunk size, embeddings, and query quality.
+The current LangGraph workflow contains retrieval, chat, and MCQ nodes.
+MCQ quality depends on transcript quality and retrieved context.
+The application currently supports a single video per chat.
+Chat history is maintained in Streamlit session state.
+Chat history may not persist across Streamlit application restarts unless additional persistence is implemented.
+Generated MCQs are stored in the current Streamlit chat session.
+PDF generation currently provides questions, answers, and explanations but does not include interactive answer fields.
+Timestamp citation data is not currently surfaced in the Streamlit interface.
+No user authentication system is currently implemented.
+No multi-user account system is currently implemented.
+🔮 Future Improvements
+The project can be extended with:
+
+ 🌐 FastAPI backend
+ 🎨 React / Next.js frontend
+ 🔐 User authentication
+ 👥 Multi-user support
+ 🎬 Multiple videos per conversation
+ 🌍 Automatic language detection
+ 🗣️ More transcript languages
+ ⏱️ Clickable timestamp citations
+ 📚 Source citations in answers
+ 🔎 Hybrid keyword + semantic retrieval
+ 🧠 Reranking models
+ ✍️ Query rewriting
+ 📝 More advanced quiz types
+ 📊 Quiz analytics
+ 🏆 Leaderboards
+ 🐳 Docker support
+ 🧪 Automated tests
+ 🚀 GitHub Actions CI/CD
+ 📊 RAG evaluation metrics
+ 🔭 LangSmith observability
+ 📈 Retrieval and answer-quality analytics
+ 💾 Persistent user chat history
+ ☁️ Cloud-based FAISS/vector database
+ 📄 More customizable PDF templates
+🤝 Contributing
+Contributions are welcome!
+
+1. Fork the Repository
+Click the Fork button on GitHub.
+
+2. Clone Your Fork
 git clone https://github.com/YOUR_USERNAME/ai-yt-chatbot.git
 cd ai-yt-chatbot
-</pre>
 
-<h3>3. Create a Feature Branch</h3>
-
-<pre>
+3. Create a Feature Branch
 git checkout -b feature/your-feature
-</pre>
 
-<h3>4. Make Your Changes</h3>
+4. Make Your Changes
+Implement your feature or fix.
 
-<p>Implement your feature or fix.</p>
-
-<h3>5. Commit Your Changes</h3>
-
-<pre>
+5. Commit Your Changes
 git add .
 git commit -m "Add your feature"
-</pre>
 
-<h3>6. Push Your Branch</h3>
-
-<pre>
+6. Push Your Branch
 git push origin feature/your-feature
-</pre>
 
-<p>Then open a Pull Request on GitHub.</p>
+Then open a Pull Request on GitHub.
 
-<hr>
+🔒 Security
+Make sure .gitignore contains:
 
-<h2>🔒 Security</h2>
-
-<p>Make sure your <code>.gitignore</code> contains:</p>
-
-<pre>
 .env
 venv/
 __pycache__/
 *.pyc
 faiss_indexes/
-</pre>
 
-<p>Never commit:</p>
+Never commit:
 
-<ul>
-<li>❌ API keys</li>
-<li>❌ Passwords</li>
-<li>❌ <code>.env</code> files</li>
-<li>❌ PostgreSQL credentials</li>
-<li>❌ Private tokens</li>
-<li>❌ Sensitive information</li>
-</ul>
-
-<p>
+❌ API keys
+❌ Passwords
+❌ .env files
+❌ PostgreSQL credentials
+❌ Private tokens
+❌ Other sensitive information
 If a secret is accidentally pushed to GitHub, revoke or rotate it immediately.
+
 Deleting the file afterward does not remove the secret from Git history.
-</p>
 
-<hr>
+📄 License
+This project is licensed under the MIT License.
 
-<h2>📄 License</h2>
+Add a LICENSE file to the root of the repository containing the MIT License text.
 
-<p>
-This project is licensed under the <strong>MIT License</strong>.
-</p>
+🙏 Acknowledgements
+This project was built using:
 
-<p>
-Add a <code>LICENSE</code> file to the root of the repository containing the MIT License text.
-</p>
-
-<hr>
-
-<h2>🙏 Acknowledgements</h2>
-
-<ul>
-<li>LangChain</li>
-<li>LangGraph</li>
-<li>Hugging Face</li>
-<li>FAISS</li>
-<li>Groq</li>
-<li>PostgreSQL</li>
-<li>Streamlit</li>
-<li>ReportLab</li>
-<li>YouTube</li>
-</ul>
-
-<hr>
-
-<h2>👨‍💻 Author</h2>
-
-<h3>AYUSH GUPTA</h3>
-
-<p>
+LangChain
+LangGraph
+Hugging Face
+FAISS
+Groq
+PostgreSQL
+Streamlit
+ReportLab
+👨‍💻 Author
+AYUSH GUPTA
 Built with:
-</p>
 
-<p>
-<strong>Python • Streamlit • LangChain • LangGraph • FAISS • Groq • Hugging Face • PostgreSQL • ReportLab</strong>
-</p>
+Python • Streamlit • LangChain • LangGraph • FAISS • Groq • Hugging Face • PostgreSQL • ReportLab
 
-<p>
 If you found this project useful, consider giving the repository a ⭐ on GitHub!
-</p>
-
-<hr>
-
-<div align="center">
-
-<h3>⬆️ Back to Top</h3>
-
-<p>
-<strong>AI YouTube Chatbot</strong> — Chat • Learn • Quiz • Download
-</p>
-
-</div>
-
-</div>
