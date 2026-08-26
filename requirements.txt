@@ -12,3 +12,4 @@ psycopg[binary]
 faiss-cpu
 youtube-transcript-api
 huggingface-hub
+reportlab

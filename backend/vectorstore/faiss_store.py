@@ -30,9 +30,10 @@ def get_vectorstore(url: str, embeddings) -> FAISS:
         chunks = get_chunk(docs)
 
         # Metadata
-        for chunk in chunks:
+        for  chunk in chunks:
             chunk.metadata["video_id"] = video_id
             chunk.metadata["video_url"] = url
+        
 
         # Create FAISS
         vectorstore = FAISS.from_documents(documents=chunks,embedding=embeddings)

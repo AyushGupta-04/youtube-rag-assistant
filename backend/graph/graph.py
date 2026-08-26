@@ -1,58 +1,113 @@
-from langchain_core.messages import AIMessage
-from langgraph.graph import StateGraph, START, END
-
+from langchain_core.messages import BaseMessage, HumanMessage, AIMessage
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate,MessagesPlaceholder
+from langgraph.graph import StateGraph,START,END
+from backend.llm.mcq import create_mcq_chain
 from backend.graph.state import YTChatState
-from backend.llm.prompt import prompt
+
+# CHAT PROMPT
+chat_prompt = ChatPromptTemplate.from_messages([(
+            "system",
+            """
+            You are an AI assistant that answers questions
+            about a YouTube video.
+
+            RULES:
+            1. Answer ONLY using the provided video transcript context.
+            2. If the answer is not present in the context, reply exactly:
+            "The video doesn't mention this"
+            3. Be concise, clear and accurate.
+            4. Do not invent information.
+            5. Maintain conversation history for follow-up questions.
+            6. Use previous conversation to understand follow-up questions.
+            7. Use video context for factual answers.
+
+            VIDEO CONTEXT:
+            {context} 
+            """
+        ),
+        MessagesPlaceholder(variable_name="messages")
+    ]
+)
 
 
-def build_graph(retriever, model, checkpointer):
-    graph = StateGraph(YTChatState)
+# BUILD GRAPH
+def build_graph(retriever, model,checkpointer):
+
+    chat_chain = chat_prompt| model| StrOutputParser()
+    mcq_chain = create_mcq_chain(model)
+
+    graph = StateGraph( YTChatState)
+
+    # RETRIEVE
     def retrieve_node(state: YTChatState):
-        question = state["question"]
-        print(f"Retrieving context for: {question}")
+        query = state.get("question","important topics from the video")
 
-        docs = retriever.invoke(question)
+        docs = retriever.invoke(query)
         if not docs:
-            context = "No relevant context found."
+            context = ("No relevant context found.")
+
         else:
             context_parts = []
             for doc in docs:
                 source = doc.metadata.get("video_url","Unknown")
                 content = doc.page_content
-                context_parts.append(f"""
-                Source: {source}
-                Content: {content}
-                """ )
-            context = "\n\n".join(context_parts)
+                context_parts.append(
+                    f"""Source: {source}
+                    Content:{content}
+                    """
+                )
 
+            context = "\n\n".join(context_parts)
         return {
             "documents": docs,
             "context": context
         }
 
-    def generate_node(state: YTChatState):
-        print("Generating answer...")
-
-        prompt_value = prompt.invoke({
-            "context": state["context"],
-            "messages": state.get("messages", []),
-        })
-
-        response = model.invoke(prompt_value)
-        answer = response.content
-
-        if not isinstance(answer, str):
-            answer = str(answer)
+    # CHAT
+    def chat_node(state: YTChatState):
+        response = chat_chain.invoke(
+            {
+                "context": state["context"],
+                "messages": state.get("messages",[])
+            }
+        )
 
         return {
-            "answer": answer,
-            "messages": [AIMessage(content=answer)]
-            }
+            "answer": response,
+            "messages": [AIMessage(content=response)]
+        }
 
+    # MCQ
+    def mcq_node(state: YTChatState):
+        number = state.get("number",5)
+        difficulty = state.get("difficulty","Medium")
+        result = mcq_chain.invoke(
+            {
+                "context": state["context"],
+                "number": number,
+                "difficulty": difficulty
+            }
+        )
+        return { "mcqs": result}
+
+    # ROUTER
+    def route_mode(state: YTChatState):
+        mode = state.get("mode","chat")
+        if mode == "mcq":
+            return "mcq"
+
+        return "chat"
+
+    # NODES
     graph.add_node("retrieve",retrieve_node)
-    graph.add_node("generate",generate_node)
-    graph.add_edge(START,"retrieve")
-    graph.add_edge("retrieve","generate")
-    graph.add_edge("generate",END)
+    graph.add_node("chat",chat_node)
+    graph.add_node("mcq",mcq_node)
+
+    # EDGES
+    graph.add_edge(START, "retrieve")
+    graph.add_conditional_edges("retrieve",route_mode, {"chat": "chat","mcq": "mcq"})
+    graph.add_edge("chat",END)
+    graph.add_edge("mcq",END)
 
     return graph.compile(checkpointer=checkpointer)

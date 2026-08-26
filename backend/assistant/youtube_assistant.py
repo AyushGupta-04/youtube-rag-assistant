@@ -1,12 +1,11 @@
-from langchain_core.messages import HumanMessage
-
 from backend.youtube.url import get_video_id
-from backend.vectorstore.embeddings import get_embed
+from backend.vectorstore.embeddings import  get_embed
 from backend.vectorstore.faiss_store import get_vectorstore
 from backend.vectorstore.retriever import create_retriever
 from backend.llm.model import create_llm
 from backend.graph.graph import build_graph
 from backend.database.postgres import Database
+from langchain_core.messages import HumanMessage
 
 class YouTubeAssistant:
     def __init__(self):
@@ -14,14 +13,16 @@ class YouTubeAssistant:
 
         self.embeddings = None
         self.model = None
+        self.database = Database()
+        self.checkpointer = None
         self.graph = None
         self.retriever = None
         self.video_id = None
         self.video_url = None
-        self.database = Database()
 
         print("YouTube Assistant created.")
 
+    # MODELS
     def initialize_models(self):
         if self.embeddings is None:
             self.embeddings = get_embed()
@@ -29,53 +30,46 @@ class YouTubeAssistant:
         if self.model is None:
             self.model = create_llm()
 
+    # LOAD VIDEO
     def load_video(self, url: str):
-
         if not url.strip():
             raise ValueError("YouTube URL cannot be empty.")
-
+        
         video_id = get_video_id(url)
-        print(f"Preparing video: {video_id}")
+        print( f"Preparing video: {video_id}")
 
         # Models
         self.initialize_models()
 
-        # Database
-        checkpointer = self.database.initialize()
+        # PostgreSQL
+        self.checkpointer = (self.database.initialize())
 
-        # Vector store
-        vectorstore = get_vectorstore(url,self.embeddings)
+        # FAISS
+        vectorstore = get_vectorstore(url, self.embeddings)
 
         # Retriever
-        self.retriever = create_retriever(vectorstore)
+        self.retriever = create_retriever( vectorstore)
 
         # Graph
         self.graph = build_graph(
             self.retriever,
             self.model,
-            checkpointer
+            self.checkpointer
         )
 
         self.video_id = video_id
         self.video_url = url
 
-        print(f"Video ready: {video_id}")
+        print( f"Video ready: {video_id}")
         return video_id
 
-    def ask(
-        self,
-        question: str,
-        thread_id: str
-    ):
-
+    # NORMAL CHAT
+    def ask(self,question: str,thread_id: str):
         if not question.strip():
-            raise ValueError("Question cannot be empty.")
+            raise ValueError( "Question cannot be empty.")
 
         if self.graph is None:
-            raise ValueError("Please load a YouTube video first.")
-
-        if not self.database.checkpointer:
-            raise ValueError("PostgreSQL checkpointer is not initialized.")
+            raise ValueError( "Please load a YouTube video first.")
 
         config = {
             "configurable": {"thread_id": thread_id}
@@ -84,60 +78,51 @@ class YouTubeAssistant:
         response = self.graph.invoke(
             {
                 "question": question,
-                "messages": [HumanMessage(content=question)]
+                "mode": "chat",
+                "messages": [ HumanMessage(content=question)]
             },
-            config=config )
+            config=config
+        )
         return response["answer"]
 
-    def ask_stream(
+    # GENERATE MCQs
+    def generate_mcqs(
         self,
-        question: str,
+        number: int,
+        difficulty: str,
         thread_id: str
     ):
-
-        if not question.strip():
-            raise ValueError( "Question cannot be empty.")
 
         if self.graph is None:
             raise ValueError("Please load a YouTube video first.")
 
-        if not self.database.checkpointer:
-            raise ValueError("PostgreSQL checkpointer is not initialized.")
+        if number < 1 or number > 20:
+            raise ValueError("Number of questions must be between 1 and 20.")
+
+        difficulty = difficulty.capitalize()
+        if difficulty not in ["Easy", "Medium","Hard" ]:
+            raise ValueError( "Difficulty must be Easy, Medium or Hard.")
 
         config = {
             "configurable": {"thread_id": thread_id}
         }
 
-        for chunk in self.graph.stream(
+        response = self.graph.invoke(
             {
-                "question": question,
-                "messages": [HumanMessage(content=question)]
-            },
-            config=config,
-            stream_mode="updates",
-            version="v2"
-        ):
+                "question": ("Generate important MCQs from the video."),
+                "mode": "mcq",
+                "number": number,
+                "difficulty": difficulty
+            }, 
+            config=config
+        )
 
-            if chunk["type"] != "updates":
-                continue
+        result = response.get("mcqs")
+        if result is None:
+            raise RuntimeError("MCQ generation failed.")
 
-            updates = chunk["data"]
+        return result
 
-            if "generate" not in updates:
-                continue
-
-            generate_update = updates["generate"]
-            answer = generate_update.get("answer")
-
-            if not answer:
-                continue
-
-            words = answer.split(" ")
-            for index, word in enumerate(words):
-                if index == 0:
-                    yield word
-                else:
-                    yield " " + word
-
+    # CLOSE
     def close(self):
         self.database.close()
