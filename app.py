@@ -30,7 +30,8 @@ if "chats" not in st.session_state:
             "messages": [],
             "mcqs": None,
             "quiz_submitted": False,
-            "score": None
+            "score": None,
+            "input_version": 0,
         }
     }
 
@@ -50,7 +51,8 @@ def create_new_chat():
         "messages": [],
         "mcqs": None,
         "quiz_submitted": False,
-        "score": None
+        "score": None,
+        "input_version": 0,
     }
 
     st.session_state.current_chat = chat_id
@@ -232,7 +234,7 @@ if chat["video_url"] and st.session_state.mode == "chat":
                 "Message",
                 placeholder="Ask anything about this video...",
                 label_visibility="collapsed",
-                key=f"question_{chat['thread_id']}"
+                key=f"question_{chat['thread_id']}_{chat['input_version']}"
             )
 
         # SEND
@@ -266,7 +268,8 @@ if chat["video_url"] and st.session_state.mode == "chat":
             try:
                 with st.spinner("Thinking..."):
                     answer = st.session_state.assistant.ask(
-                        question=question, thread_id=chat["thread_id"])
+                        question=question, 
+                        thread_id=chat["thread_id"])
                     
                 # ASSISTANT MESSAGE
                 chat["messages"].append(
@@ -275,6 +278,9 @@ if chat["video_url"] and st.session_state.mode == "chat":
                         "content": answer
                     }
                 )
+                
+                # CREATE A FRESH INPUT WIDGET
+                chat["input_version"] += 1
                 st.rerun()
 
             except Exception as e:
